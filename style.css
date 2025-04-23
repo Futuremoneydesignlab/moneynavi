@@ -1,0 +1,164 @@
+:root {
+--primary: #1a73e8;
+--accent: #e91e63;
+--success: #00c853;
+--bg-light: #f5f7fa;
+--text: #333;
+--shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ベース */
+body {
+font-family: 'Helvetica Neue', sans-serif;
+background: var(--bg-light);
+color: var(--text);
+margin: 0;
+padding: 1rem;
+}
+
+h1, h2, h3 {
+color: var(--primary);
+}
+
+/* 共通コンテナ */
+.result-container, .chat-container {
+max-width: 720px;
+margin: 0 auto;
+padding: 1rem;
+background: white;
+border-radius: 12px;
+box-shadow: var(--shadow);
+}
+
+/* スコア表示 */
+.score-number {
+font-size: 64px;
+font-weight: bold;
+color: var(--primary);
+animation: pulse 1.8s infinite;
+text-align: center;
+margin-bottom: 0.5rem;
+}
+
+@keyframes pulse {
+0% { transform: scale(1); opacity: 1; }
+50% { transform: scale(1.1); opacity: 0.8; }
+100% { transform: scale(1); opacity: 1; }
+}
+
+.score-label, .score-description {
+text-align: center;
+font-size: 1rem;
+margin-bottom: 1rem;
+}
+
+.score-rank {
+display: inline-block;
+background: linear-gradient(45deg, var(--accent), #ff4081);
+color: white;
+padding: 0.2rem 0.6rem;
+border-radius: 999px;
+font-size: 0.8rem;
+margin-right: 0.5rem;
+box-shadow: 0 0 0 3px white;
+}
+
+/* 棒グラフ */
+.comparison-chart {
+display: flex;
+justify-content: space-around;
+align-items: flex-end;
+height: 120px;
+margin: 1rem 0;
+}
+
+.user-bar, .average-bar {
+width: 30px;
+border-radius: 4px;
+transition: height 0.8s ease, background 0.4s ease;
+}
+
+.user-bar {
+background: var(--primary);
+}
+
+.average-bar {
+background: #ccc;
+}
+
+.user-bar:hover {
+background: #0d47a1;
+}
+
+.average-bar:hover {
+background: #888;
+/* シェアセクション */
+position: relative;
+overflow: hidden;
+}
+
+.cta-button::after {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(circle, rgba(255,255,255,0.2) 10%, transparent 60%);
+animation: glow 2.5s infinite;
+}
+
+@keyframes glow {
+0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+50% { transform: scale(1.1) rotate(180deg); opacity: 1; }
+100% { transform: scale(1) rotate(360deg); opacity: 0.4; }
+}
+
+.cta-button:hover {
+background: #c2185b;
+}
+
+.cta-nudge {
+font-size: 0.85rem;
+color: #888;
+margin-top: 0.5rem;
+}
+
+/* モバイル最適化 */
+@media (max-width: 600px) {
+.result-container, .chat-container {
+padding: 1rem;
+}
+
+.char-stats {
+flex-direction: column;
+align-items: center;
+}
+
+.share-buttons {
+flex-direction: column;
+align-items: center;
+}
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+body {
+background: #121212;
+color: #e0e0e0;
+}
+
+.result-container, .cta-card, .proof-card {
+background: #1e1e1e;
+box-shadow: none;
+}
+
+.char-label, .score-number {
+color: #90caf9;
+}
+
+.score-rank {
+background: #f48fb1;
+color: #000;
+}
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>診断結果｜未来家計スコア</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+<main class="result-container" id="report">
+<h1>🎉 診断完了！</h1>
+
+<div class="score-number" id="scoreValue">78 点</div>
+
+<div class="char-label" id="charLabel">節約キング</div>
+<img src="king.png" alt="キャラ画像" class="char-image" onerror="this.src='default.png'" />
+
+<p class="char-advice" id="charAdvice">
+固定費最適化の達人！資産形成フェーズへステップアップ
+</p>
+
+<button class="cta-button" onclick="generatePDF()">📄 診断結果をPDF保存</button>
+<button class="cta-button" onclick="saveResult()">💾 データを保存</button>
+</main>
+
+<script>
+function generatePDF() {
+const element = document.getElementById("report");
+html2pdf().set({
+margin: 0.5,
+filename: '家計スコア診断結果.pdf',
+image: { type: 'jpeg', quality: 0.98 },
+html2canvas: { scale: 2 },
+jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+}).from(element).save();
+}
+
+function saveResult() {
+const result = {
+score: 78,
+character: "節約キング",
+insurance: 15000,
+communication: 8000,
+subscription: 3000,
+duration: 91
+};
+
+fetch("YOUR_GAS_URL_HERE", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(result)
+})
+.then(res => res.text())
+.then(text => alert("保存しました！"))
+.catch(err => console.error("保存エラー", err));
+}
+</script>
+</body>
+</html>
