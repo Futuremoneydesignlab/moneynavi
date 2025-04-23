@@ -1,137 +1,79 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>未来家計スコア診断</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>未来家計スコア診断</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header class="nudge-header">
-<h1>🎯 未来家計スコア診断 <span class="badge">NEW</span></h1>
-<p class="social-proof" data-tooltip="直近1時間で248人が診断中">累計診断者数 <span id="userCount">12,345</span>人突破！</p>
-</header>
+  <div class="app-container">
+    <header class="diagnosis-header">
+      <div class="header-content">
+        <h1 class="gradient-text">未来家計スコア診断</h1>
+        <div class="progress-indicator">
+          <div class="progress-track"></div>
+          <div class="progress-thumb"></div>
+        </div>
+      </div>
+    </header>
 
-<!-- ゲーミフィケーション進捗表示＋報酬 -->
-<div class="evolution-progress">
-<div class="progress-step active" data-level="1">
-<div class="achievement-badge">
-<div class="badge-icon">🎖️</div>
-<div class="badge-progress">
-<div class="progress-fill" style="width: 33%"></div>
-</div>
-</div>
-<div class="reward-preview">
-<div class="reward-card mini">
-<img src="reward-1.png" alt="節約術ガイド" />
-</div>
-</div>
-</div>
-</div>
+    <main class="diagnosis-flow">
+      <div class="chat-bubble ai-message">
+        <div class="message-header">
+          <i class="fas fa-robot"></i>
+          <span>家計AIアシスタント</span>
+        </div>
+        <div class="message-content">
+          <div class="input-card active">
+            <h3>毎月の保険料は？</h3>
+            <div class="input-group">
+              <div class="currency-display">¥</div>
+              <input 
+                type="number" 
+                id="insuranceInput" 
+                class="modern-input"
+                placeholder="30,000"
+                data-category="insurance"
+                min="0"
+                max="200000"
+                step="1000"
+              >
+              <div class="input-guide">
+                <i class="fas fa-info-circle"></i>
+                保険証券やアプリで確認できます
+              </div>
+            </div>
+            <div class="comparison-widget">
+              <div class="bar-chart">
+                <div class="user-bar" style="height: 45%"></div>
+                <div class="average-bar" style="height: 65%"></div>
+              </div>
+              <div class="chart-labels">
+                <span class="user-label">あなた</span>
+                <span class="average-label">平均</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<main id="chat-container">
-<!-- ステップ1：保険料 -->
-<div class="chat-step active" data-step="1">
-<div class="bot-message">
-<div class="question-card loss-aversion">
-<h3>Q1. 毎月の保険料は？<span class="input-hint">（平均 ¥23,500）</span></h3>
-<div class="input-wrapper">
-<span class="currency">¥</span>
-<input
-type="number"
-id="insurance"
-placeholder="平均 ¥23,500"
-min="0"
-max="100000"
-step="1000"
-inputmode="numeric"
-data-average="23500"
-data-category="insurance"
-oninput="showRealTimeFeedback(this); validateInputs();"
-required
-/>
-<div class="input-tooltip">
-※ 保険証券やアプリで確認可
-<button class="tooltip-button" onclick="showHelpModal('insurance')">?</button>
-</div>
-</div>
+      <div class="navigation-controls">
+        <button class="nav-button next-button disabled">
+          <span>次へ進む</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </main>
 
-<div class="real-time-feedback"></div>
+    <div class="floating-notification">
+      <i class="fas fa-user-shield"></i>
+      <span>すべてのデータは暗号化されて安全に保管されます</span>
+    </div>
+  </div>
 
-<div class="comparison-bubble">
-<div class="comparison-chart">
-<div class="user-bar" style="height: 40%"></div>
-<div class="average-bar" style="height: 60%"></div>
-</div>
-<div class="comparison-legend">
-<span class="user-label">あなた</span>
-<span class="average-label">平均</span>
-</div>
-</div>
-</div>
-
-<button class="next-button" onclick="handleNextStep()" disabled>
-<span class="button-text">次へ進む</span>
-<span class="button-subtext">（平均回答時間 27秒）</span>
-</button>
-</div>
-</div>
-
-<!-- 中間報酬バナー -->
-<div class="progress-reward" style="display:none;">
-<div class="reward-card">
-<p>🎉 上位30%の成績です！あと1問で「節約マスター」バッジ獲得！</p>
-</div>
-</div>
-</main>
-
-<!-- フッター：行動誘導＋情報信頼性 -->
-<footer class="action-footer">
-<div class="commitment-nudge">
-<p>🔒 診断結果は匿名で保存され、3日後に自動削除されます</p>
-<button class="share-prompt" onclick="showShareModal()">
-📢 友達と結果を比較する
-</button>
-</div>
-</footer>
-
-<!-- モーダル：シェア特典誘導 -->
-<div id="shareModal" class="modal" style="display: none;">
-<div class="modal-content">
-<div class="share-incentive">
-<p>🎁 シェア特典</p>
-<ul class="benefits-list">
-<li>✅ 家計診断レポート</li>
-<li>✅ 節約術ガイド</li>
-<li>✅ 限定セミナー案内</li>
-</ul>
-</div>
-<div class="share-timer">
-<div class="timer-text">⏳ 特典終了まで:</div>
-<div class="countdown" data-time="600">10:00</div>
-</div>
-<div class="share-buttons">
-<button class="twitter-share" onclick="shareResult('twitter')">
-<img src="twitter-icon.svg" alt="Twitter" />
-シェアして特典GET
-</button>
-<button class="line-share" onclick="shareResult('line')">
-<img src="line-icon.svg" alt="LINE" />
-LINEでシェア
-</button>
-</div>
-</div>
-</div>
-
-<!-- ユーザーガイド -->
-<div class="interactive-guide">
-<div class="guide-step" data-step="1">
-<h3>🎮 操作ガイド</h3>
-<div class="gesture-demo swipe"></div>
-<p>スワイプまたはクリックで次へ</p>
-</div>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
