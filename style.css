@@ -149,3 +149,141 @@ body {
     transform: translateX(0);
   }
 }
+
+/* style.css 追加部分 */
+:root {
+  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  --success: #10b981;
+  --error: #ef4444;
+  --surface: #ffffff;
+  --text-primary: #1e293b;
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.result-card {
+  background: var(--surface);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.confetti-animation {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: radial-gradient(circle, rgba(255,223,0,0.1) 0%, transparent 60%);
+  animation: confetti 2s ease-out;
+}
+
+@keyframes confetti {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; }
+}
+
+.score-display {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.score-number {
+  font-size: 4rem;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.character-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.action-buttons {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-button {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.save-button {
+  background: #e2e8f0;
+  color: var(--text-primary);
+}
+
+.notification-toast {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-xl);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.notification-toast.show {
+  bottom: 2rem;
+  opacity: 1;
+}
+
+.notification-toast.success {
+  background: var(--success);
+  color: white;
+}
+
+.notification-toast.error {
+  background: var(--error);
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .result-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+  
+  .score-number {
+    font-size: 3rem;
+  }
+}
