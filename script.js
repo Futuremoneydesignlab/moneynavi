@@ -1,86 +1,70 @@
-// script.js
-class DiagnosisApp {
-  constructor() {
-    this.steps = document.querySelectorAll('.input-card');
-    this.currentStep = 0;
-    this.userData = {};
-    this.init();
-  }
+// script.js：UI改善版＋リアルタイムフィードバック
 
-  init() {
-    this.setupEventListeners();
-    this.updateProgress();
-  }
+let currentStep = 1;
+const totalSteps = 5;
+const cards = document.querySelectorAll('.question-card');
+const nextBtn = document.getElementById('next-btn');
+const prevBtn = document.getElementById('prev-btn');
+const progressBar = document.getElementById('progress-bar');
+const progressText = document.getElementById('current');
 
-  setupEventListeners() {
-    document.querySelectorAll('.modern-input').forEach(input => {
-      input.addEventListener('input', this.handleInput.bind(this));
-    });
-
-    document.querySelector('.next-button').addEventListener('click', this.nextStep.bind(this));
-  }
-
-  handleInput(e) {
-    const input = e.target;
-    const value = parseInt(input.value);
-    const category = input.dataset.category;
-
-    if (value >= 0 && value <= 200000) {
-      this.userData[category] = value;
-      this.updateComparisonVisualization(value);
-      this.toggleNextButton();
-    }
-  }
-
-  updateComparisonVisualization(value) {
-    const average = 23500;
-    const userBar = document.querySelector('.user-bar');
-    const averageBar = document.querySelector('.average-bar');
-    
-    const maxHeight = 150;
-    const userHeight = Math.min((value / 100000) * maxHeight, maxHeight);
-    const averageHeight = Math.min((average / 100000) * maxHeight, maxHeight);
-
-    userBar.style.height = `${userHeight}px`;
-    averageBar.style.height = `${averageHeight}px`;
-  }
-
-  toggleNextButton() {
-    const button = document.querySelector('.next-button');
-    button.classList.toggle('disabled', !this.isValidInput());
-  }
-
-  isValidInput() {
-    return this.userData.insurance > 0;
-  }
-
-  nextStep() {
-    if (!this.isValidInput()) return;
-
-    this.steps[this.currentStep].classList.remove('active');
-    this.currentStep++;
-    
-    if (this.currentStep < this.steps.length) {
-      this.steps[this.currentStep].classList.add('active');
-      this.updateProgress();
-    } else {
-      this.completeDiagnosis();
-    }
-  }
-
-  updateProgress() {
-    const progress = (this.currentStep + 1) / this.steps.length * 100;
-    document.querySelector('.progress-thumb').style.width = `${progress}%`;
-  }
-
-  completeDiagnosis() {
-    // 診断結果処理
-    localStorage.setItem('diagnosisResult', JSON.stringify(this.userData));
-    window.location.href = 'result.html';
-  }
+function updateProgress() {
+  progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+  progressText.textContent = currentStep;
+  cards.forEach((card, index) => {
+    card.classList.toggle('active', index === currentStep - 1);
+  });
+  prevBtn.disabled = currentStep === 1;
+  nextBtn.textContent = currentStep === totalSteps ? '診断結果を見る →' : '次へ →';
 }
 
-// アプリ起動
-document.addEventListener('DOMContentLoaded', () => {
-  new DiagnosisApp();
+nextBtn.addEventListener('click', () => {
+  if (currentStep < totalSteps) {
+    currentStep++;
+    updateProgress();
+  } else {
+    showResult();
+  }
 });
+
+prevBtn.addEventListener('click', () => {
+  if (currentStep > 1) {
+    currentStep--;
+    updateProgress();
+  }
+});
+
+document.querySelectorAll('.bubble-option').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('selected');
+    const selected = document.querySelectorAll('.bubble-option.selected');
+    if (selected.length > 3) {
+      selected[0].classList.remove('selected');
+    }
+  });
+});
+
+const slider = document.getElementById('housingPercent');
+const sliderValue = document.getElementById('housingValue');
+
+function updateSliderValue() {
+  const value = slider.value;
+  sliderValue.textContent = value;
+  const benchmark = 30;
+  const diff = value - benchmark;
+  const color = diff > 5 ? '#e74c3c' : diff < -5 ? '#2ecc71' : '#f1c40f';
+  slider.style.setProperty('--thumb-color', color);
+}
+
+slider.addEventListener('input', updateSliderValue);
+
+function showResult() {
+  const housingPercent = slider.value;
+  const categories = Array.from(document.querySelectorAll('.bubble-option.selected')).map(btn => btn.dataset.category);
+
+  const message = `\n🏠 住居費：${housingPercent}%\n💸 気になる支出：${categories.join(', ')}`;
+  alert(`診断完了！\n${message}`);
+}
+
+updateProgress();
+updateSliderValue();

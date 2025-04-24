@@ -1,79 +1,81 @@
-<!-- index.html -->
+<!-- index.html：簡易診断MVP（UI改善版） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>未来家計スコア診断</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>家計診断｜簡易版</title>
   <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="app-container">
-    <header class="diagnosis-header">
-      <div class="header-content">
-        <h1 class="gradient-text">未来家計スコア診断</h1>
-        <div class="progress-indicator">
-          <div class="progress-track"></div>
-          <div class="progress-thumb"></div>
-        </div>
-      </div>
-    </header>
-
-    <main class="diagnosis-flow">
-      <div class="chat-bubble ai-message">
-        <div class="message-header">
-          <i class="fas fa-robot"></i>
-          <span>家計AIアシスタント</span>
-        </div>
-        <div class="message-content">
-          <div class="input-card active">
-            <h3>毎月の保険料は？</h3>
-            <div class="input-group">
-              <div class="currency-display">¥</div>
-              <input 
-                type="number" 
-                id="insuranceInput" 
-                class="modern-input"
-                placeholder="30,000"
-                data-category="insurance"
-                min="0"
-                max="200000"
-                step="1000"
-              >
-              <div class="input-guide">
-                <i class="fas fa-info-circle"></i>
-                保険証券やアプリで確認できます
-              </div>
-            </div>
-            <div class="comparison-widget">
-              <div class="bar-chart">
-                <div class="user-bar" style="height: 45%"></div>
-                <div class="average-bar" style="height: 65%"></div>
-              </div>
-              <div class="chart-labels">
-                <span class="user-label">あなた</span>
-                <span class="average-label">平均</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="navigation-controls">
-        <button class="nav-button next-button disabled">
-          <span>次へ進む</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </main>
-
-    <div class="floating-notification">
-      <i class="fas fa-user-shield"></i>
-      <span>すべてのデータは暗号化されて安全に保管されます</span>
+  <header class="gradient-header">
+    <div class="header-content">
+      <h1>🎯 3分で完了！未来家計診断</h1>
+      <p class="trust-badge">累計診断者数 <span class="count">12,345</span>人突破</p>
     </div>
+  </header>
+  
+  <div class="progress">
+    <div id="progress-bar"></div>
+    <div class="progress-text"><span id="current">1</span>/5問</div>
   </div>
 
-  <script src="script.js"></script>
+  <main id="question-container">
+    <!-- 質問1：住居費率 -->
+    <section class="question-card active" data-question="1">
+      <div class="card-header">
+        <span class="question-number">Q1</span>
+        <div class="tooltip">?
+          <span class="tooltiptext">家賃や住宅ローンの合計金額を想定</span>
+        </div>
+      </div>
+      <h2>🏠 住居費は収入の何%？</h2>
+      <div class="input-wrapper">
+        <input type="range" id="housingPercent" class="modern-slider" min="0" max="50" step="1" value="30">
+        <div class="current-value">
+          <span id="housingValue">30</span>%
+        </div>
+      </div>
+    </section>
+
+    <!-- 質問2：気になる支出カテゴリ -->
+    <section class="question-card" data-question="2">
+      <h2>💸 気になる支出カテゴリは？（3つまで）</h2>
+      <div class="bubble-grid">
+        <button class="bubble-option" data-category="insurance">保険料</button>
+        <button class="bubble-option" data-category="utilities">光熱費</button>
+        <button class="bubble-option" data-category="food">食費</button>
+        <button class="bubble-option" data-category="loan">ローン返済</button>
+        <button class="bubble-option" data-category="mobile">通信費</button>
+      </div>
+    </section>
+
+    <!-- 質問3：貯蓄習慣 -->
+    <section class="question-card" data-question="3">
+      <h2>🧾 貯蓄の習慣はありますか？</h2>
+      <label><input type="radio" name="saving" value="yes"> ある</label>
+      <label><input type="radio" name="saving" value="no"> ない</label>
+    </section>
+
+    <!-- 質問4：投資状況 -->
+    <section class="question-card" data-question="4">
+      <h2>📈 投資をしていますか？</h2>
+      <label><input type="radio" name="invest" value="yes"> している</label>
+      <label><input type="radio" name="invest" value="no"> していない</label>
+    </section>
+
+    <!-- 質問5：診断結果の受け取り方法 -->
+    <section class="question-card" data-question="5">
+      <h2>🧠 診断結果をどの方法で受け取りたいですか？</h2>
+      <label><input type="radio" name="result" value="line"> LINEで受け取る</label>
+      <label><input type="radio" name="result" value="pdf"> PDFでダウンロード</label>
+    </section>
+
+    <div class="button-row">
+      <button id="prev-btn" disabled>← 戻る</button>
+      <button id="next-btn">次へ →</button>
+    </div>
+  </main>
 </body>
 </html>
