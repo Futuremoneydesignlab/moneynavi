@@ -1,169 +1,79 @@
+<!-- result.html：タイプ診断付き＋詳細誘導構成 -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>診断結果｜未来家計スコア</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>診断結果｜未来家計診断</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .result-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .savings {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #27ae60;
+      margin: 1rem 0;
+    }
+    .type-label {
+      font-size: 1.25rem;
+      margin: 1rem 0;
+      color: #3498db;
+    }
+    .recommendation-list {
+      text-align: left;
+      margin: 1rem auto;
+      max-width: 400px;
+    }
+    .recommendation-list li {
+      margin: 0.5rem 0;
+    }
+    .cta-area {
+      margin-top: 2rem;
+    }
+    .cta-btn {
+      background: #3498db;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover {
+      background: #2980b9;
+    }
+  </style>
 </head>
 <body>
-  <div class="app-container">
-    <main class="result-card" id="report">
-      <div class="result-header">
-        <div class="confetti-animation"></div>
-        <h1 class="gradient-text">診断完了！</h1>
-        <div class="achievement-badge">
-          <i class="fas fa-crown"></i>
-          <span>スコア更新</span>
-        </div>
-      </div>
+  <div class="result-container">
+    <h1>✨ あなたの家計診断結果 ✨</h1>
+    <p class="savings">年間最大 <strong>¥158,000</strong> 節約の可能性！</p>
 
-      <div class="score-display">
-        <div class="score-number" id="scoreValue">78</div>
-        <span class="score-unit">ポイント</span>
-        <div class="score-progress">
-          <div class="progress-bar" style="width: 78%"></div>
-        </div>
-      </div>
+    <h2 class="type-label">あなたは「支出バランス意識型」タイプです</h2>
+    <p>固定費を気にしつつも、まだ改善余地が残っています。特に保険・通信費まわりは“支払い過多”になりやすい傾向があるため、見直しがおすすめです。</p>
 
-      <div class="result-details">
-        <div class="character-card">
-          <img src="king.png" alt="キャラクター" class="character-image" />
-          <div class="character-info">
-            <h3 class="character-title" id="charLabel">節約キング</h3>
-            <p class="character-description" id="charAdvice">
-              固定費最適化の達人！資産形成フェーズへステップアップ
-            </p>
-          </div>
-        </div>
+    <h3>優先改善カテゴリ</h3>
+    <ul class="recommendation-list">
+      <li>🛡️ 保険料の見直し</li>
+      <li>💡 光熱費プランの変更</li>
+      <li>📱 通信費のプラン最適化</li>
+    </ul>
 
-        <div class="detail-cards">
-          <div class="detail-card insurance">
-            <i class="fas fa-shield-alt"></i>
-            <div class="detail-content">
-              <span class="detail-label">保険料</span>
-              <span class="detail-value">¥15,000</span>
-            </div>
-          </div>
-          <div class="detail-card communication">
-            <i class="fas fa-wifi"></i>
-            <div class="detail-content">
-              <span class="detail-label">通信費</span>
-              <span class="detail-value">¥8,000</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="action-buttons">
-        <button class="action-button pdf-button" onclick="generatePDF()">
-          <i class="fas fa-file-pdf"></i>
-          PDFで保存
-        </button>
-        <button class="action-button save-button" onclick="saveResult()">
-          <i class="fas fa-cloud-upload-alt"></i>
-          データ保存
-        </button>
-      </div>
-    </main>
-
-    <div class="notification-toast" id="toast"></div>
+    <div class="cta-area">
+      <p>📥 より精密な診断と改善プランの提案をご希望の方へ</p>
+      <button class="cta-btn" onclick="window.location.href='https://lin.ee/your-bot-url'">
+        LINEで無料詳細診断に進む →
+      </button>
+    </div>
   </div>
-
-  <script>
-    // アニメーション初期化
-    document.addEventListener('DOMContentLoaded', () => {
-      animateElements();
-      loadResultData();
-    });
-
-    // PDF生成関数
-    function generatePDF() {
-      const element = document.getElementById("report");
-      const opt = {
-        margin: [0.5, 0.5],
-        filename: '家計スコア診断結果.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-          scale: 3,
-          useCORS: true,
-          letterRendering: true
-        },
-        jsPDF: { 
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'portrait'
-        }
-      };
-
-      html2pdf()
-        .set(opt)
-        .from(element)
-        .save()
-        .then(() => showToast('PDFの生成が完了しました'));
-    }
-
-    // データ保存関数
-    async function saveResult() {
-      const result = {
-        score: 78,
-        character: "節約キング",
-        insurance: 15000,
-        communication: 8000,
-        subscription: 3000,
-        duration: 91
-      };
-
-      try {
-        const response = await fetch("YOUR_GAS_URL_HERE", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(result)
-        });
-        
-        if (!response.ok) throw new Error('保存に失敗しました');
-        showToast('データを安全に保存しました', 'success');
-      } catch (error) {
-        console.error("保存エラー", error);
-        showToast(error.message, 'error');
-      }
-    }
-
-    // トースト通知
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = `notification-toast ${type}`;
-      setTimeout(() => toast.classList.add('show'), 10);
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // アニメーション制御
-    function animateElements() {
-      anime({
-        targets: '.score-number',
-        scale: [0.8, 1],
-        opacity: [0, 1],
-        duration: 800,
-        easing: 'easeOutElastic(1, .5)'
-      });
-    }
-
-    // データ読み込み
-    function loadResultData() {
-      const savedData = localStorage.getItem('diagnosisResult');
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        document.getElementById('scoreValue').textContent = data.score;
-        // 他のデータバインド処理...
-      }
-    }
-  </script>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </body>
 </html>

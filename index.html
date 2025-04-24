@@ -1,47 +1,48 @@
-<!-- index.html：簡易診断MVP（UI改善版） -->
+<!-- index.html：心理トリガー強化＋平均比較付きMVP -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家計診断｜簡易版</title>
+  <title>家計診断｜未来型</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
   <header class="gradient-header">
     <div class="header-content">
-      <h1>🎯 3分で完了！未来家計診断</h1>
+      <h1>🎯 未来家計スコア診断</h1>
       <p class="trust-badge">累計診断者数 <span class="count">12,345</span>人突破</p>
     </div>
   </header>
-  
+
   <div class="progress">
     <div id="progress-bar"></div>
     <div class="progress-text"><span id="current">1</span>/5問</div>
   </div>
 
   <main id="question-container">
-    <!-- 質問1：住居費率 -->
+    <!-- Q1：住居費率＋平均比較 -->
     <section class="question-card active" data-question="1">
       <div class="card-header">
         <span class="question-number">Q1</span>
         <div class="tooltip">?
-          <span class="tooltiptext">家賃や住宅ローンの合計金額を想定</span>
+          <span class="tooltiptext">家賃や住宅ローンの合計額を収入で割った値</span>
         </div>
       </div>
       <h2>🏠 住居費は収入の何%？</h2>
       <div class="input-wrapper">
         <input type="range" id="housingPercent" class="modern-slider" min="0" max="50" step="1" value="30">
-        <div class="current-value">
-          <span id="housingValue">30</span>%
-        </div>
+        <div class="current-value"><span id="housingValue">30</span>%</div>
+        <p class="feedback-bubble" id="housingFeedback"></p>
+        <small class="benchmark">全国平均：28%</small>
       </div>
     </section>
 
-    <!-- 質問2：気になる支出カテゴリ -->
+    <!-- Q2：支出カテゴリ選択（行動誘導付き） -->
     <section class="question-card" data-question="2">
-      <h2>💸 気になる支出カテゴリは？（3つまで）</h2>
+      <h2>💸 今、最も支出が気になるのは？（最大3つ）</h2>
+      <p class="nudge">※多くの20代〜30代は保険・通信費・食費を選択しています</p>
       <div class="bubble-grid">
         <button class="bubble-option" data-category="insurance">保険料</button>
         <button class="bubble-option" data-category="utilities">光熱費</button>
@@ -51,25 +52,29 @@
       </div>
     </section>
 
-    <!-- 質問3：貯蓄習慣 -->
+    <!-- Q3〜Q5（そのまま活用） -->
     <section class="question-card" data-question="3">
-      <h2>🧾 貯蓄の習慣はありますか？</h2>
-      <label><input type="radio" name="saving" value="yes"> ある</label>
-      <label><input type="radio" name="saving" value="no"> ない</label>
+      <h2>🧾 毎月、貯蓄はできていますか？</h2>
+      <label><input type="radio" name="saving" value="yes"> はい</label>
+      <label><input type="radio" name="saving" value="no"> いいえ</label>
     </section>
 
-    <!-- 質問4：投資状況 -->
     <section class="question-card" data-question="4">
-      <h2>📈 投資をしていますか？</h2>
+      <h2>📈 投資はしていますか？</h2>
       <label><input type="radio" name="invest" value="yes"> している</label>
       <label><input type="radio" name="invest" value="no"> していない</label>
     </section>
 
-    <!-- 質問5：診断結果の受け取り方法 -->
     <section class="question-card" data-question="5">
-      <h2>🧠 診断結果をどの方法で受け取りたいですか？</h2>
+      <h2>🧠 診断結果の受け取り方法は？</h2>
       <label><input type="radio" name="result" value="line"> LINEで受け取る</label>
       <label><input type="radio" name="result" value="pdf"> PDFでダウンロード</label>
+    </section>
+
+    <!-- フレーミング＆コンコルド効果エリア（最終直前表示） -->
+    <section class="pre-result-summary">
+      <h2>⏳ あと1ステップで「改善プラン」が完成！</h2>
+      <p class="nudge">あなたと似た家計タイプの人は平均 <strong>¥92,000</strong> 節約に成功！</p>
     </section>
 
     <div class="button-row">

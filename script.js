@@ -1,4 +1,4 @@
-// script.js：UI改善版＋リアルタイムフィードバック
+// script.js：心理トリガー強化＋平均比較ロジック対応
 
 let currentStep = 1;
 const totalSteps = 5;
@@ -16,6 +16,9 @@ function updateProgress() {
   });
   prevBtn.disabled = currentStep === 1;
   nextBtn.textContent = currentStep === totalSteps ? '診断結果を見る →' : '次へ →';
+
+  // 平均比較バブル更新（Q1）
+  if (currentStep === 1) updateSliderFeedback();
 }
 
 nextBtn.addEventListener('click', () => {
@@ -46,17 +49,31 @@ document.querySelectorAll('.bubble-option').forEach(btn => {
 
 const slider = document.getElementById('housingPercent');
 const sliderValue = document.getElementById('housingValue');
+const feedbackBubble = document.getElementById('housingFeedback');
 
-function updateSliderValue() {
-  const value = slider.value;
+function updateSliderFeedback() {
+  const value = parseInt(slider.value);
   sliderValue.textContent = value;
-  const benchmark = 30;
-  const diff = value - benchmark;
-  const color = diff > 5 ? '#e74c3c' : diff < -5 ? '#2ecc71' : '#f1c40f';
-  slider.style.setProperty('--thumb-color', color);
+  const avg = 28;
+  const diff = value - avg;
+
+  let text = '', color = '';
+  if (diff > 5) {
+    text = '📉 平均より高めです（見直しチャンス）';
+    color = '#e74c3c';
+  } else if (diff < -5) {
+    text = '📈 平均より抑えられています！';
+    color = '#2ecc71';
+  } else {
+    text = '⚖️ 平均的なバランスです';
+    color = '#f1c40f';
+  }
+
+  feedbackBubble.textContent = text;
+  feedbackBubble.style.color = color;
 }
 
-slider.addEventListener('input', updateSliderValue);
+slider.addEventListener('input', updateSliderFeedback);
 
 function showResult() {
   const housingPercent = slider.value;
@@ -67,4 +84,4 @@ function showResult() {
 }
 
 updateProgress();
-updateSliderValue();
+updateSliderFeedback();
