@@ -1,4 +1,4 @@
-<!-- result.html：タイプ診断付き＋詳細誘導構成 -->
+<!-- result.html：キャラ診断強化＆節約分析付き -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>診断結果｜未来家計診断</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .result-container {
       max-width: 600px;
@@ -16,62 +17,127 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.1);
       text-align: center;
     }
-    .savings {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #27ae60;
-      margin: 1rem 0;
+    .character-card {
+      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
     }
-    .type-label {
-      font-size: 1.25rem;
+    .character-name {
+      font-size: 1.8rem;
+      color: #2c3e50;
       margin: 1rem 0;
-      color: #3498db;
+      animation: fadeInUp 0.6s ease;
     }
-    .recommendation-list {
-      text-align: left;
+    .character-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
       margin: 1rem auto;
-      max-width: 400px;
+      border: 4px solid #3498db;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
-    .recommendation-list li {
-      margin: 0.5rem 0;
+    .savings-breakdown {
+      display: grid;
+      gap: 1rem;
+      margin: 2rem 0;
     }
-    .cta-area {
+    .savings-item {
+      background: rgba(52, 152, 219, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: left;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cta-card {
       margin-top: 2rem;
     }
-    .cta-btn {
-      background: #3498db;
+    .line-cta {
+      background: #00c300;
       color: #fff;
+      border: none;
       padding: 0.75rem 1.5rem;
       font-size: 1.1rem;
-      border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-    .cta-btn:hover {
-      background: #2980b9;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
   </style>
+  <script>
+    window.onload = function() {
+      const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+
+      const scores = {
+        insurance: profile.insuranceScore || 0,
+        mobile: profile.mobileScore || 0,
+        food: profile.foodScore || 0
+      };
+
+      const maxCategory = Object.entries(scores).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+
+      const characters = {
+        insurance: {
+          name: '🛡️ 保険見直しヴァルキリー',
+          desc: '保険料の最適化で月¥4,200節約可能！',
+          image: 'valkyrie.png'
+        },
+        mobile: {
+          name: '📱 通信費魔導師',
+          desc: 'プラン見直しで月¥2,300削減チャンス！',
+          image: 'wizard.png'
+        },
+        food: {
+          name: '🍴 食費調理賢者',
+          desc: '自炊管理で月¥8,000節約達成可能！',
+          image: 'sage.png'
+        }
+      };
+
+      const character = characters[maxCategory] || characters.insurance;
+
+      document.getElementById('charName').textContent = character.name;
+      document.getElementById('charImage').src = character.image;
+      document.getElementById('charDesc').textContent = character.desc;
+
+      const detailEl = document.getElementById('charDetail');
+      detailEl.innerHTML = '<h3>🔍 主な改善ポイント</h3>';
+
+      if (profile.insuranceScore > 120) {
+        const amount = Math.round((profile.insuranceCost - 23500) * 12);
+        detailEl.innerHTML += `<div class="savings-item">保険料: 年¥${amount.toLocaleString()} 節約可能</div>`;
+      }
+      if (profile.mobileScore > 120) {
+        const amount = Math.round((profile.mobileCost - 7800) * 12);
+        detailEl.innerHTML += `<div class="savings-item">通信費: 年¥${amount.toLocaleString()} 節約可能</div>`;
+      }
+      if (profile.foodScore > 120) {
+        const amount = Math.round((profile.foodCost - 40000) * 12);
+        detailEl.innerHTML += `<div class="savings-item">食費: 年¥${amount.toLocaleString()} 節約可能</div>`;
+      }
+    };
+  </script>
 </head>
 <body>
   <div class="result-container">
-    <h1>✨ あなたの家計診断結果 ✨</h1>
-    <p class="savings">年間最大 <strong>¥158,000</strong> 節約の可能性！</p>
-
-    <h2 class="type-label">あなたは「支出バランス意識型」タイプです</h2>
-    <p>固定費を気にしつつも、まだ改善余地が残っています。特に保険・通信費まわりは“支払い過多”になりやすい傾向があるため、見直しがおすすめです。</p>
-
-    <h3>優先改善カテゴリ</h3>
-    <ul class="recommendation-list">
-      <li>🛡️ 保険料の見直し</li>
-      <li>💡 光熱費プランの変更</li>
-      <li>📱 通信費のプラン最適化</li>
-    </ul>
-
-    <div class="cta-area">
-      <p>📥 より精密な診断と改善プランの提案をご希望の方へ</p>
-      <button class="cta-btn" onclick="window.location.href='https://lin.ee/your-bot-url'">
-        LINEで無料詳細診断に進む →
+    <h1>🎉 あなたの家計診断結果</h1>
+    <div class="character-card">
+      <img id="charImage" src="default.png" alt="キャラクター" class="character-image">
+      <h2 class="character-name" id="charName"></h2>
+      <p class="character-desc" id="charDesc"></p>
+    </div>
+    <div class="savings-breakdown" id="charDetail"></div>
+    <div class="cta-card">
+      <h3>💡 今すぐ行動しよう！</h3>
+      <button class="line-cta" onclick="window.location.href='https://lin.ee/your-bot-url'">
+        <i class="fab fa-line"></i>
+        無料相談で具体的な改善プランをGET
       </button>
     </div>
   </div>

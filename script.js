@@ -1,24 +1,20 @@
-// script.js：心理トリガー強化＋平均比較ロジック対応
-
 let currentStep = 1;
 const totalSteps = 5;
 const cards = document.querySelectorAll('.question-card');
 const nextBtn = document.getElementById('next-btn');
 const prevBtn = document.getElementById('prev-btn');
-const progressBar = document.getElementById('progress-bar');
-const progressText = document.getElementById('current');
+const progressText = document.getElementById('current-step');
+const slider = document.getElementById('housingPercent');
+const housingValue = document.getElementById('housingValue');
+const housingFeedback = document.getElementById('housingFeedback');
 
 function updateProgress() {
-  progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
-  progressText.textContent = currentStep;
-  cards.forEach((card, index) => {
-    card.classList.toggle('active', index === currentStep - 1);
+  cards.forEach((card, idx) => card.classList.toggle('active', idx === currentStep - 1));
+  document.querySelectorAll('.progress-step').forEach((step, idx) => {
+    step.classList.toggle('active', idx === currentStep - 1);
   });
+  progressText.textContent = currentStep;
   prevBtn.disabled = currentStep === 1;
-  nextBtn.textContent = currentStep === totalSteps ? '診断結果を見る →' : '次へ →';
-
-  // 平均比較バブル更新（Q1）
-  if (currentStep === 1) updateSliderFeedback();
 }
 
 nextBtn.addEventListener('click', () => {
@@ -26,7 +22,8 @@ nextBtn.addEventListener('click', () => {
     currentStep++;
     updateProgress();
   } else {
-    showResult();
+    saveUserProfile();
+    window.location.href = 'result.html';
   }
 });
 
@@ -37,51 +34,35 @@ prevBtn.addEventListener('click', () => {
   }
 });
 
-document.querySelectorAll('.bubble-option').forEach(btn => {
-  btn.addEventListener('click', () => {
-    btn.classList.toggle('selected');
-    const selected = document.querySelectorAll('.bubble-option.selected');
-    if (selected.length > 3) {
-      selected[0].classList.remove('selected');
-    }
-  });
+slider.addEventListener('input', () => {
+  const value = slider.value;
+  housingValue.textContent = value;
+  const diff = value - 30;
+  housingFeedback.textContent = diff > 0 ? `平均より+${diff}%` : `${Math.abs(diff)}%節約中`;
+  housingFeedback.style.color = diff > 0 ? '#e74c3c' : '#2ecc71';
 });
 
-const slider = document.getElementById('housingPercent');
-const sliderValue = document.getElementById('housingValue');
-const feedbackBubble = document.getElementById('housingFeedback');
+document.getElementById('insuranceCost').addEventListener('input', e => {
+  const value = parseInt(e.target.value.replace(/,/g, '')) || 0;
+  const avg = 23500;
+  const percent = Math.min(value / (avg * 1.5) * 100, 100);
+  document.querySelector('.insurance .user-bar').style.width = `${percent}%`;
+});
 
-function updateSliderFeedback() {
-  const value = parseInt(slider.value);
-  sliderValue.textContent = value;
-  const avg = 28;
-  const diff = value - avg;
+function saveUserProfile() {
+  const insuranceCost = parseInt(document.getElementById('insuranceCost').value || 0);
+  const housingPercent = parseInt(document.getElementById('housingPercent').value || 0);
 
-  let text = '', color = '';
-  if (diff > 5) {
-    text = '📉 平均より高めです（見直しチャンス）';
-    color = '#e74c3c';
-  } else if (diff < -5) {
-    text = '📈 平均より抑えられています！';
-    color = '#2ecc71';
-  } else {
-    text = '⚖️ 平均的なバランスです';
-    color = '#f1c40f';
-  }
+  const userProfile = {
+    insuranceCost,
+    housingPercent,
+    insuranceScore: Math.round((insuranceCost / 23500) * 100),
+    saving: document.querySelector('input[name="saving"]:checked')?.value || '',
+    invest: document.querySelector('input[name="invest"]:checked')?.value || '',
+    resultMethod: document.querySelector('input[name="result"]:checked')?.value || ''
+  };
 
-  feedbackBubble.textContent = text;
-  feedbackBubble.style.color = color;
-}
-
-slider.addEventListener('input', updateSliderFeedback);
-
-function showResult() {
-  const housingPercent = slider.value;
-  const categories = Array.from(document.querySelectorAll('.bubble-option.selected')).map(btn => btn.dataset.category);
-
-  const message = `\n🏠 住居費：${housingPercent}%\n💸 気になる支出：${categories.join(', ')}`;
-  alert(`診断完了！\n${message}`);
+  localStorage.setItem('userProfile', JSON.stringify(userProfile));
 }
 
 updateProgress();
-updateSliderFeedback();

@@ -1,198 +1,135 @@
-/* style.css：簡易診断MVP（UI改善版） */
 body {
-  font-family: 'Helvetica Neue', sans-serif;
-  background: #f4f4f4;
+  font-family: sans-serif;
+  background: #f7f9fc;
   margin: 0;
-  padding: 0;
-  color: #333;
 }
 
 .gradient-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
   color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  text-align: center;
 }
 
-.trust-badge {
-  background: rgba(255,255,255,0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
+.social-proof {
   font-size: 0.9rem;
-  margin-top: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
   display: inline-block;
 }
 
-.progress {
-  background: #e0e0e0;
-  height: 10px;
-  position: relative;
-  margin: 0 10px;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-#progress-bar {
-  background: #27ae60;
-  height: 100%;
-  width: 0;
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  text-align: center;
-  margin: 0.5rem;
-  font-size: 0.9rem;
-}
-
-main {
-  padding: 1rem;
-}
-
 .question-card {
-  display: none;
-  background: #fff;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: white;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  max-width: 700px;
 }
 
-.question-card.active {
-  display: block;
-}
-
-.range-labels {
+.card-header {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-}
-
-.benchmark {
-  font-weight: bold;
-  color: #e67e22;
-}
-
-.bubble-grid {
-  display: flex;
-  flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.bubble-option {
-  padding: 0.6rem 1rem;
-  border: 1px solid #3498db;
-  border-radius: 999px;
-  background: #fff;
-  color: #3498db;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.bubble-option.selected {
-  background: #3498db;
-  color: #fff;
-}
-
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  background: #2c3e50;
-  color: #fff;
-  transition: background 0.2s;
-}
-
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-  background: #34495e;
+  font-weight: bold;
 }
 
 .tooltip {
   position: relative;
-  display: inline-block;
-  margin-left: 0.5rem;
-  font-weight: bold;
-  cursor: help;
+  cursor: pointer;
 }
 
 .tooltiptext {
-  visibility: hidden;
-  width: 160px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
   position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -80px;
-  opacity: 0;
-  transition: opacity 0.3s;
+  top: -1.5rem;
+  left: 1rem;
+  background: black;
+  color: white;
+  padding: 0.3rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  display: none;
 }
 
 .tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+  display: block;
 }
 
-.modern-slider {
-  -webkit-appearance: none;
+.interactive-slider input {
   width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: #ecf0f1;
 }
 
-.modern-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #3498db;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.modern-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
 }
 
 .current-value {
   text-align: center;
-  font-size: 1.5rem;
   font-weight: bold;
-  color: #2c3e50;
-  margin: 1rem 0;
 }
 
-@media (max-width: 480px) {
-  .question-card {
-    padding: 1rem;
-    margin: 0 -1rem 1rem;
-    border-radius: 0;
-    box-shadow: none;
-    border-bottom: 1px solid #eee;
-  }
+.comparison-bubble {
+  margin-top: 0.5rem;
+}
 
-  .bubble-option {
-    flex: 1 0 45%;
-    text-align: center;
-    padding: 1rem;
-  }
+.cost-input-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cost-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.currency {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.input-wrapper input {
+  padding: 0.6rem 1rem 0.6rem 2rem;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.comparison-graph {
+  height: 10px;
+  background: #f0f0f0;
+  margin-top: 0.5rem;
+  position: relative;
+  border-radius: 6px;
+}
+
+.user-bar {
+  height: 100%;
+  background: #3498db;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.avg-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: red;
+}
+
+.navigation-controls {
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
 }

@@ -1,10 +1,9 @@
-<!-- index.html：心理トリガー強化＋平均比較付きMVP -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家計診断｜未来型</title>
+  <title>未来家計診断</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
 </head>
@@ -12,75 +11,101 @@
   <header class="gradient-header">
     <div class="header-content">
       <h1>🎯 未来家計スコア診断</h1>
-      <p class="trust-badge">累計診断者数 <span class="count">12,345</span>人突破</p>
+      <div class="social-proof">
+        <i class="fas fa-users"></i>
+        <span>直近1時間で<span id="liveCount">248</span>人が診断中</span>
+      </div>
     </div>
   </header>
 
-  <div class="progress">
-    <div id="progress-bar"></div>
-    <div class="progress-text"><span id="current">1</span>/5問</div>
+  <div class="gamified-progress">
+    <div class="progress-step active"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
   </div>
 
   <main id="question-container">
-    <!-- Q1：住居費率＋平均比較 -->
+    <!-- Q1 -->
     <section class="question-card active" data-question="1">
       <div class="card-header">
         <span class="question-number">Q1</span>
         <div class="tooltip">?
-          <span class="tooltiptext">家賃や住宅ローンの合計額を収入で割った値</span>
+          <span class="tooltiptext">家賃や住宅ローンの合計金額を想定</span>
         </div>
       </div>
       <h2>🏠 住居費は収入の何%？</h2>
-      <div class="input-wrapper">
-        <input type="range" id="housingPercent" class="modern-slider" min="0" max="50" step="1" value="30">
-        <div class="current-value"><span id="housingValue">30</span>%</div>
-        <p class="feedback-bubble" id="housingFeedback"></p>
-        <small class="benchmark">全国平均：28%</small>
+      <div class="interactive-slider">
+        <input type="range" id="housingPercent" min="0" max="50" value="30">
+        <div class="slider-labels">
+          <span>0%</span>
+          <span class="benchmark">適正30%</span>
+          <span>50%</span>
+        </div>
+        <div class="current-value">
+          <span id="housingValue">30</span>%
+          <div class="comparison-bubble" id="housingFeedback"></div>
+        </div>
       </div>
     </section>
 
-    <!-- Q2：支出カテゴリ選択（行動誘導付き） -->
+    <!-- Q2 -->
     <section class="question-card" data-question="2">
-      <h2>💸 今、最も支出が気になるのは？（最大3つ）</h2>
-      <p class="nudge">※多くの20代〜30代は保険・通信費・食費を選択しています</p>
-      <div class="bubble-grid">
-        <button class="bubble-option" data-category="insurance">保険料</button>
-        <button class="bubble-option" data-category="utilities">光熱費</button>
-        <button class="bubble-option" data-category="food">食費</button>
-        <button class="bubble-option" data-category="loan">ローン返済</button>
-        <button class="bubble-option" data-category="mobile">通信費</button>
+      <div class="card-header">
+        <span class="question-number">Q2</span>
+        <div class="tooltip">?
+          <span class="tooltiptext">直近1ヶ月の実際の支出額を入力</span>
+        </div>
+      </div>
+      <h2>💸 月々の支出を入力</h2>
+      <div class="cost-input-grid">
+        <div class="cost-card insurance">
+          <div class="cost-header">
+            <i class="fas fa-shield-alt"></i>
+            <h3>保険料</h3>
+            <span class="avg">平均 ¥23,500</span>
+          </div>
+          <div class="input-wrapper">
+            <span class="currency">¥</span>
+            <input type="text" id="insuranceCost" placeholder="28,000" data-average="23500">
+          </div>
+          <div class="comparison-graph">
+            <div class="user-bar" style="width: 0%"></div>
+            <div class="avg-line"></div>
+          </div>
+          <div class="dynamic-feedback" id="insuranceFeedback"></div>
+        </div>
       </div>
     </section>
 
-    <!-- Q3〜Q5（そのまま活用） -->
+    <!-- Q3 -->
     <section class="question-card" data-question="3">
       <h2>🧾 毎月、貯蓄はできていますか？</h2>
       <label><input type="radio" name="saving" value="yes"> はい</label>
       <label><input type="radio" name="saving" value="no"> いいえ</label>
     </section>
 
+    <!-- Q4 -->
     <section class="question-card" data-question="4">
-      <h2>📈 投資はしていますか？</h2>
+      <h2>📈 投資をしていますか？</h2>
       <label><input type="radio" name="invest" value="yes"> している</label>
       <label><input type="radio" name="invest" value="no"> していない</label>
     </section>
 
+    <!-- Q5 -->
     <section class="question-card" data-question="5">
-      <h2>🧠 診断結果の受け取り方法は？</h2>
+      <h2>🧠 診断結果をどの方法で受け取りたいですか？</h2>
       <label><input type="radio" name="result" value="line"> LINEで受け取る</label>
       <label><input type="radio" name="result" value="pdf"> PDFでダウンロード</label>
     </section>
 
-    <!-- フレーミング＆コンコルド効果エリア（最終直前表示） -->
-    <section class="pre-result-summary">
-      <h2>⏳ あと1ステップで「改善プラン」が完成！</h2>
-      <p class="nudge">あなたと似た家計タイプの人は平均 <strong>¥92,000</strong> 節約に成功！</p>
-    </section>
-
-    <div class="button-row">
-      <button id="prev-btn" disabled>← 戻る</button>
-      <button id="next-btn">次へ →</button>
+    <div class="navigation-controls">
+      <button id="prev-btn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress-indicator"><span id="current-step">1</span>/5</div>
+      <button id="next-btn"><i class="fas fa-chevron-right"></i></button>
     </div>
   </main>
 </body>
 </html>
+
